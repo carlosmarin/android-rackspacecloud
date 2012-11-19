@@ -91,7 +91,7 @@ public class ListContainerActivity extends GaListActivity {
 	}
 
 	private void setContainerList() {
-		if (containerNames.length == 0) {
+		if (containerNames == null || containerNames.length == 0) {
 			displayNoServersCell();
 		} else {
 			getListView().setDividerHeight(1); // restore divider lines
@@ -169,9 +169,9 @@ public class ListContainerActivity extends GaListActivity {
 				showAlert("Error", exception.getMessage());
 			}
 			ArrayList<Container> containerList = result;
-			containerNames = new String[containerList.size()];
-			containers = new Container[containerList.size()];
-			if (containerList != null) {
+                        if (containerList != null) {
+                            containerNames = new String[containerList.size()];
+                            containers = new Container[containerList.size()];
 				for (int i = 0; i < containerList.size(); i++) {
 					Container container = containerList.get(i);
 					containers[i] = container;
@@ -212,17 +212,18 @@ public class ListContainerActivity extends GaListActivity {
 			}
 
 			ArrayList<Container> cdnContainers = result;
-
-			for (int i = 0; i < containers.length; i++) {
-				Container container = containers[i];
-				for (int t = 0; t < cdnContainers.size(); t++) {
-					Container cdnContainer = cdnContainers.get(t);
-					if (container.getName().equals(cdnContainer.getName())) {
-						container.setCdnEnabled(cdnContainer.isCdnEnabled());
-						container.setCdnUrl(cdnContainer.getCdnUrl());
-						container.setTtl(cdnContainer.getTtl());
-					}
-				}
+			if (containers != null && cdnContainers != null) {
+			    for (int i = 0; i < containers.length; i++) {
+			        Container container = containers[i];
+			        for (int t = 0; t < cdnContainers.size(); t++) {
+			            Container cdnContainer = cdnContainers.get(t);
+			            if (container.getName().equals(cdnContainer.getName())) {
+			                container.setCdnEnabled(cdnContainer.isCdnEnabled());
+			                container.setCdnUrl(cdnContainer.getCdnUrl());
+			                container.setTtl(cdnContainer.getTtl());
+			            }
+			        }
+			    }
 			}
 			setContainerList();
 			loading = false;

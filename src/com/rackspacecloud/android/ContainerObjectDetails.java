@@ -381,24 +381,26 @@ public class ContainerObjectDetails extends CloudActivity {
 
 		@Override
 		protected void onPostExecute(HttpBundle bundle) {
-			app.setDeleteingObject(false);
-			hideDialog();
-			HttpResponse response = bundle.getResponse();
-			if (response != null) {
-				int statusCode = response.getStatusLine().getStatusCode();
-				if (statusCode == 204) {
-					//handled by listener
-				} else {
-					CloudServersException cse = parseCloudServersException(response);
-					if ("".equals(cse.getMessage())) {
-						showError("There was a problem deleting your File.", bundle);
-					} else {
-						showError("There was a problem deleting your file: " + cse.getMessage(), bundle);
-					}
-				}
-			} else if (exception != null) {
-				showError("There was a problem deleting your file: " + exception.getMessage(), bundle);				
-			}			
+		    app.setDeleteingObject(false);
+		    hideDialog();
+		    if (bundle != null) { //Otherwise a listener later on shows an error message
+		        HttpResponse response = bundle.getResponse();
+		        if (response != null) {
+		            int statusCode = response.getStatusLine().getStatusCode();
+		            if (statusCode == 204) {
+		                //handled by listener
+		            } else {
+		                CloudServersException cse = parseCloudServersException(response);
+		                if ("".equals(cse.getMessage())) {
+		                    showError("There was a problem deleting your File.", bundle);
+		                } else {
+		                    showError("There was a problem deleting your file: " + cse.getMessage(), bundle);
+		                }
+		            }
+		        } else if (exception != null) {
+		            showError("There was a problem deleting your file: " + exception.getMessage(), bundle);				
+		        }
+		    }
 		}
 	}
 
@@ -427,26 +429,28 @@ public class ContainerObjectDetails extends CloudActivity {
 
 		@Override
 		protected void onPostExecute(HttpBundle bundle) {
-			app.setDownloadingObject(false);
-			hideDialog();
-			HttpResponse response = bundle.getResponse();
-			if (response != null) {
-				int statusCode = response.getStatusLine().getStatusCode();
-				if (statusCode == 200) {
-					setResult(Activity.RESULT_OK);
-					HttpEntity entity = response.getEntity();
-					app.setDownloadedEntity(entity);
-				} else {
-					CloudServersException cse = parseCloudServersException(response);
-					if ("".equals(cse.getMessage())) {
-						showError("There was a problem downloading your File.", bundle);
-					} else {
-						showError("There was a problem downloading your file: " + cse.getMessage(), bundle);
-					}
-				}
-			} else if (exception != null) {
-				showError("There was a problem downloading your file: " + exception.getMessage(), bundle);				
-			}			
+		    app.setDownloadingObject(false);
+		    hideDialog();
+		    if (bundle != null) { //Otherwise a listener later on shows an error message
+		        HttpResponse response = bundle.getResponse();
+		        if (response != null) {
+		            int statusCode = response.getStatusLine().getStatusCode();
+		            if (statusCode == 200) {
+		                setResult(Activity.RESULT_OK);
+		                HttpEntity entity = response.getEntity();
+		                app.setDownloadedEntity(entity);
+		            } else {
+		                CloudServersException cse = parseCloudServersException(response);
+		                if ("".equals(cse.getMessage())) {
+		                    showError("There was a problem downloading your File.", bundle);
+		                } else {
+		                    showError("There was a problem downloading your file: " + cse.getMessage(), bundle);
+		                }
+		            }
+		        } else if (exception != null) {
+		            showError("There was a problem downloading your file: " + exception.getMessage(), bundle);				
+		        }
+		    }
 		}
 	}
 	

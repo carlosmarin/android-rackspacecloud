@@ -560,10 +560,6 @@ public class ViewServerActivity extends CloudActivity {
 		}
 
 	}
-	
-	private void showNetworkError() {
-	    showError(getString(R.string.network_error_occured), null);
-	}
 
 	private class SoftRebootServerTask extends AsyncTask<Void, Void, HttpBundle> {
 

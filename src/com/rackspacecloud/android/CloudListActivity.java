@@ -206,7 +206,11 @@ public class CloudListActivity extends GaListActivity{
 		viewIntent.putExtra("request", bundle.getCurlRequest());
 		startActivity(viewIntent);
 	}
-	
+
+        protected void showNetworkError() {
+            showAlert(getString(R.string.error), getString(R.string.network_error_occured));
+        }
+
 	protected void showToast(String message) {
 		Context context = getApplicationContext();
 		int duration = Toast.LENGTH_SHORT;

@@ -213,6 +213,10 @@ public abstract class CloudActivity extends GaActivity{
 		startActivity(viewIntent);
 	}
 	
+	protected void showNetworkError() {
+	    showAlert(getString(R.string.error), getString(R.string.network_error_occured));
+	}
+	
 	protected void showToast(String message) {
 		Context context = getApplicationContext();
 		int duration = Toast.LENGTH_SHORT;

@@ -67,25 +67,29 @@ public class AddContainerActivity extends CloudActivity implements OnClickListen
 
 		@Override
 		protected void onPostExecute(HttpBundle bundle) {
-			hideDialog();
-			HttpResponse response = bundle.getResponse();
-			if (response != null) {
-				int statusCode = response.getStatusLine().getStatusCode();
-				if (statusCode == 201) {
-					setResult(Activity.RESULT_OK);
-					finish();
-				} else {
-					CloudServersException cse = parseCloudServersException(response);
-					if ("".equals(cse.getMessage())) {
-						showError("There was a problem creating your container.", bundle);
-					} else {
-						showError("There was a problem creating your container: " + cse.getMessage() + " See details for more information.", bundle);
-					}
-				}
-			} else if (exception != null) {
-				showError("There was a problem creating your container: " + exception.getMessage()+" See details for more information.", bundle);				
-			}
-			finish();
+		    hideDialog();
+		    if (bundle != null) {
+		        HttpResponse response = bundle.getResponse();
+		        if (response != null) {
+		            int statusCode = response.getStatusLine().getStatusCode();
+		            if (statusCode == 201) {
+		                setResult(Activity.RESULT_OK);
+		                finish();
+		            } else {
+		                CloudServersException cse = parseCloudServersException(response);
+		                if ("".equals(cse.getMessage())) {
+		                    showError("There was a problem creating your container.", bundle);
+		                } else {
+		                    showError("There was a problem creating your container: " + cse.getMessage() + " See details for more information.", bundle);
+		                }
+		            }
+		        } else if (exception != null) {
+		            showError("There was a problem creating your container: " + exception.getMessage()+" See details for more information.", bundle);				
+		        }
+		        finish();
+		    } else {
+		        showNetworkError();
+		    }
 		}
 	}
 
