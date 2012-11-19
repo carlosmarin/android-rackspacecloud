@@ -79,7 +79,8 @@ public class AddFileActivity extends CloudActivity implements OnClickListener{
 
 		@Override
 		protected void onPostExecute(HttpBundle bundle) {
-			hideDialog();
+                    hideDialog();
+		    if (bundle != null) {
 			HttpResponse response = bundle.getResponse();
 			if (response != null) {
 				int statusCode = response.getStatusLine().getStatusCode();
@@ -96,7 +97,10 @@ public class AddFileActivity extends CloudActivity implements OnClickListener{
 				}
 			} else if (exception != null) {
 				showError("There was a problem creating your file: " + exception.getMessage()+ " See details for more information", bundle);				
-			}			
+			}
+		    } else {
+		        showNetworkError();
+		    }
 		}
 	}
 }

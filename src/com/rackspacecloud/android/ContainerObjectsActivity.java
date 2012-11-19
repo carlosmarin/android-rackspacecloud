@@ -609,27 +609,29 @@ public class ContainerObjectsActivity extends CloudListActivity {
 
 		@Override
 		protected void onPostExecute(HttpBundle bundle) {
-			app.setAddingObject(false);
-			hideDialog();
-			HttpResponse response = bundle.getResponse();
-			if (response != null) {
-				int statusCode = response.getStatusLine().getStatusCode();
-				if (statusCode == 201) {
-					setResult(Activity.RESULT_OK);
-					//loading the new files is done by ListenerTask
-				} else {
-					CloudServersException cse = parseCloudServersException(response);
-					if ("".equals(cse.getMessage())) {
-						showError("There was a problem deleting your folder.", bundle);
-					} else {
-						showError("There was a problem deleting your folder: "
-								+ cse.getMessage(), bundle);
-					}
-				}
-			} else if (exception != null) {
-				showError("There was a problem deleting your folder: "
-						+ exception.getMessage(), bundle);
-			}
+		    app.setAddingObject(false);
+		    hideDialog();
+		    if (bundle != null) { //Otherwise a listener later on shows an error message
+		        HttpResponse response = bundle.getResponse();
+		        if (response != null) {
+		            int statusCode = response.getStatusLine().getStatusCode();
+		            if (statusCode == 201) {
+		                setResult(Activity.RESULT_OK);
+		                //loading the new files is done by ListenerTask
+		            } else {
+		                CloudServersException cse = parseCloudServersException(response);
+		                if ("".equals(cse.getMessage())) {
+		                    showError("There was a problem deleting your folder.", bundle);
+		                } else {
+		                    showError("There was a problem deleting your folder: "
+		                            + cse.getMessage(), bundle);
+		                }
+		            }
+		        } else if (exception != null) {
+		            showError("There was a problem deleting your folder: "
+		                    + exception.getMessage(), bundle);
+		        }
+		    }
 		}
 	}
 
@@ -660,30 +662,32 @@ public class ContainerObjectsActivity extends CloudListActivity {
 
 		@Override
 		protected void onPostExecute(HttpBundle bundle) {
-			app.setDeleteingObject(false);
-			hideDialog();
-			HttpResponse response = bundle.getResponse();
-			if (response != null) {
-				int statusCode = response.getStatusLine().getStatusCode();
-				if (statusCode == 409) {
-					showAlert("Error",
-					"Folder must be empty in order to delete");
-				}
-				if (statusCode == 204) {
-					setResult(Activity.RESULT_OK);
-				} else {
-					CloudServersException cse = parseCloudServersException(response);
-					if ("".equals(cse.getMessage())) {
-						showError("There was a problem deleting your folder.", bundle);
-					} else {
-						showError("There was a problem deleting your folder: "
-								+ cse.getMessage(), bundle);
-					}
-				}
-			} else if (exception != null) {
-				showError("There was a problem deleting your folder: "
-						+ exception.getMessage(), bundle);
-			}
+		    app.setDeleteingObject(false);
+		    hideDialog();
+		    if (bundle != null) { //Otherwise a listener later on shows an error message
+		        HttpResponse response = bundle.getResponse();
+		        if (response != null) {
+		            int statusCode = response.getStatusLine().getStatusCode();
+		            if (statusCode == 409) {
+		                showAlert("Error",
+		                        "Folder must be empty in order to delete");
+		            }
+		            if (statusCode == 204) {
+		                setResult(Activity.RESULT_OK);
+		            } else {
+		                CloudServersException cse = parseCloudServersException(response);
+		                if ("".equals(cse.getMessage())) {
+		                    showError("There was a problem deleting your folder.", bundle);
+		                } else {
+		                    showError("There was a problem deleting your folder: "
+		                            + cse.getMessage(), bundle);
+		                }
+		            }
+		        } else if (exception != null) {
+		            showError("There was a problem deleting your folder: "
+		                    + exception.getMessage(), bundle);
+		        }
+		    }
 		}
 	}
 
@@ -713,30 +717,32 @@ public class ContainerObjectsActivity extends CloudListActivity {
 
 		@Override
 		protected void onPostExecute(HttpBundle bundle) {
-			hideDialog();
-			app.setDeletingContainer(false);
-			HttpResponse response = bundle.getResponse();
-			if (response != null) {
-				int statusCode = response.getStatusLine().getStatusCode();
-				if (statusCode == 409) {
-					showError("Container must be empty in order to delete", bundle);
-				}
-				if (statusCode == 204) {
-					setResult(Activity.RESULT_OK);
+		    hideDialog();
+		    app.setDeletingContainer(false);
+		    if (bundle != null) { //Otherwise a listener later on shows an error message
+		        HttpResponse response = bundle.getResponse();
+		        if (response != null) {
+		            int statusCode = response.getStatusLine().getStatusCode();
+		            if (statusCode == 409) {
+		                showError("Container must be empty in order to delete", bundle);
+		            }
+		            if (statusCode == 204) {
+		                setResult(Activity.RESULT_OK);
 
-				} else {
-					CloudServersException cse = parseCloudServersException(response);
-					if ("".equals(cse.getMessage())) {
-						showError("There was a problem deleting your container.", bundle);
-					} else {
-						showError("There was a problem deleting your container: "
-								+ cse.getMessage(), bundle);
-					}
-				}
-			} else if (exception != null) {
-				showError("There was a problem deleting your server: "
-						+ exception.getMessage(), bundle);
-			}
+		            } else {
+		                CloudServersException cse = parseCloudServersException(response);
+		                if ("".equals(cse.getMessage())) {
+		                    showError("There was a problem deleting your container.", bundle);
+		                } else {
+		                    showError("There was a problem deleting your container: "
+		                            + cse.getMessage(), bundle);
+		                }
+		            }
+		        } else if (exception != null) {
+		            showError("There was a problem deleting your server: "
+		                    + exception.getMessage(), bundle);
+		        }
+		    }
 		}
 	}
 

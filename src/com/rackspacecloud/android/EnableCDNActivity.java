@@ -183,6 +183,7 @@ public class EnableCDNActivity extends CloudActivity implements OnClickListener,
 
 		@Override
 		protected void onPostExecute(HttpBundle bundle) {
+		    if (bundle != null) {
 			HttpResponse response = bundle.getResponse();
 			if (response != null) {
 				int statusCode = response.getStatusLine().getStatusCode();
@@ -207,6 +208,9 @@ public class EnableCDNActivity extends CloudActivity implements OnClickListener,
 								+ exception.getMessage()
 								+ " Check container name and try again", bundle);
 			}
+		    } else {
+		        showNetworkError();
+		    }
 		}
 	}
 
@@ -227,6 +231,7 @@ public class EnableCDNActivity extends CloudActivity implements OnClickListener,
 
 		@Override
 		protected void onPostExecute(HttpBundle bundle) {
+		    if (bundle != null) {
 			HttpResponse response = bundle.getResponse();
 			if (response != null) {
 				int statusCode = response.getStatusLine().getStatusCode();
@@ -248,6 +253,9 @@ public class EnableCDNActivity extends CloudActivity implements OnClickListener,
 								+ exception.getMessage()
 								+ " Check container name and try again", bundle);
 			}
+		    } else {
+		        showNetworkError();
+		    }
 		}
 	}
 
